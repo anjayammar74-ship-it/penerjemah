@@ -1,0 +1,3 @@
+Kunci tanda tangan APK (file: source-frontend/android/app/reiki-release.jks, alias: reiki)
+Password: 8XTPkBpO1QGL3E_TMlRL6neu
+Simpan file ini. Update APK harus ditandatangani dengan kunci yang sama.

@@ -1,0 +1,197 @@
+==============================================================
+  PENERJEMAH REIKI - Pembaca Manhwa Bahasa Indonesia (versi server sendiri)
+  Gratis selamanya: tanpa kredit AI, tanpa saldo, tanpa langganan
+==============================================================
+
+ISI FILE ZIP
+------------
+  1-JALANKAN-SERVER.bat        -> menyalakan Penerjemah Reiki di Windows (cara paling mudah)
+  2-LINK-HTTPS-SEMENTARA.bat   -> membuat link https gratis supaya bisa dibuka & di-install di HP
+  3-PENERJEMAH-SENDIRI.bat     -> (opsional) mesin terjemahan milik sendiri, tanpa internet luar
+  JALANKAN-DENGAN-DOCKER.bat   -> cara alternatif pakai Docker Desktop
+  app\                         -> program server + aplikasi yang sudah jadi (folder web)
+  source-frontend\             -> kode mentah tampilan (React), kalau mau mengubah desain
+  android-termux\              -> skrip untuk menjalankan server di HP Android
+  docker-compose.yml, Dockerfile
+  PANDUAN.txt                  -> file ini
+  KUNCI-APK.txt                -> password kunci APK (simpan baik-baik)
+  source-frontend\android\     -> proyek aplikasi Android (APK)
+
+Cara kerjanya: HP kamu membaca teks di gambar (OCR di HP), server kamu
+menghapus teks Inggris dan menerjemahkan lewat Google Terjemahan gratis.
+Kalau Google menolak, otomatis pindah ke penerjemah sendiri (kalau dinyalakan),
+lalu ke MyMemory. Tidak ada kunci API yang perlu dibayar.
+
+
+==============================================================
+ CARA PALING MUDAH - APK ANDROID (TANPA SERVER, TANPA KOMPUTER)
+==============================================================
+  File: penerjemah-reiki.apk (diunduh terpisah dari zip ini).
+  Semua proses berjalan di dalam HP: membaca teks, menghapus teks Inggris,
+  menerjemahkan (Google gratis, cadangan MyMemory). Tidak butuh server sama sekali.
+  1. Unduh penerjemah-reiki.apk di HP.
+  2. Ketuk file-nya (di notifikasi unduhan atau aplikasi File).
+  3. Kalau muncul "HP tidak boleh memasang aplikasi dari sumber ini":
+     ketuk Setelan -> nyalakan "Izinkan dari sumber ini" -> kembali -> Pasang.
+  4. Kalau Play Protect memperingatkan "aplikasi tidak dikenal": ketuk "Tetap pasang".
+     (Wajar, karena aplikasinya tidak dari Play Store.)
+  5. Buka Penerjemah Reiki, tempel link chapter, baca.
+  Versi penerjemah (semua gratis, tombol T -> "Versi penerjemah"):
+    Normal        : Google gratis per balon, paling cepat.
+    Super         : satu halaman diterjemahkan sekaligus supaya nyambung, istilah manhwa
+                    (Tuan Muda, Ketua Sekte, Tetua...) dan tanda baca dijaga. (bawaan)
+    Super Canggih : membandingkan 3 penerjemah (2 Google + AI offline di dalam HP)
+                    lalu memilih hasil terbaik per balon. Lebih lambat, paling akurat.
+  AI offline (Opus-MT) sudah ikut di dalam APK: tetap bisa menerjemahkan walau Google
+  menolak, dan tidak butuh kunci, saldo atau kredit apa pun.
+  Unduh chapter terjemahan: buka chapter -> tombol huruf T (Pengaturan baca)
+  -> "Unduh chapter terjemahan (JPG)". Gambar masuk ke folder
+  Documents/PenerjemahReiki/<judul chapter>/ di File Manager HP.
+  Di komputer (versi server di bawah) hasilnya berupa 1 file .zip di folder Download.
+
+  Membuat ulang APK sendiri (opsional, untuk yang paham kode):
+    Butuh Node.js 20, Yarn, JDK 17 dan Android Studio (Android SDK 34).
+    cd source-frontend -> yarn install -> set REACT_APP_BACKEND_URL= -> yarn build
+    -> npx cap sync android -> buka folder android di Android Studio -> Build > Generate Signed APK
+    (pakai android\app\reiki-release.jks dan password di KUNCI-APK.txt).
+
+
+LANGKAH 1 - EKSTRAK ZIP
+-----------------------
+Di Windows:
+  1. Pindahkan penerjemah-reiki-kode.zip ke folder yang tidak dihapus, misalnya C:\Reiki
+  2. Klik kanan file zip -> "Extract All..." (Ekstrak Semua) -> Extract.
+  3. Buka folder hasil ekstrak. Pastikan ada file 1-JALANKAN-SERVER.bat
+     (JANGAN menjalankan .bat langsung dari dalam zip, harus diekstrak dulu.)
+Di HP Android:
+  Pasang aplikasi "ZArchiver" dari Play Store -> buka zip -> tekan lama -> "Ekstrak di sini".
+
+
+==============================================================
+ CARA A - KOMPUTER / LAPTOP WINDOWS (DISARANKAN)
+==============================================================
+
+LANGKAH 2 - PASANG PYTHON (sekali saja)
+  1. Buka https://www.python.org/downloads/windows/ -> unduh Python 3.11 atau 3.12 (64-bit).
+  2. Saat memasang, CENTANG "Add python.exe to PATH" di layar pertama, lalu "Install Now".
+
+LANGKAH 3 - PASANG DATABASE MONGODB (sekali saja)
+  1. Buka https://www.mongodb.com/try/download/community
+  2. Pilih Windows, paket "msi", klik Download, lalu pasang dengan pilihan "Complete".
+  3. Biarkan centang "Install MongoD as a Service" -> database menyala sendiri tiap Windows hidup.
+  (MongoDB Compass boleh tidak dipasang.)
+
+LANGKAH 4 - NYALAKAN PENERJEMAH REIKI
+  1. Klik dua kali 1-JALANKAN-SERVER.bat
+     Pertama kali akan memasang bahan-bahannya (2-5 menit, butuh internet).
+     Kalau muncul "Windows protected your PC" -> klik "More info" -> "Run anyway".
+     Kalau Windows Firewall bertanya -> pilih "Allow".
+  2. Buka Chrome di komputer: http://localhost:8001  -> Penerjemah Reiki sudah tampil.
+  3. Jendela hitam itu JANGAN ditutup selama Penerjemah Reiki dipakai.
+
+  Buka dari HP di WiFi yang sama (tanpa install):
+    Di komputer buka Command Prompt, ketik  ipconfig  -> lihat "IPv4 Address", misal 192.168.1.7
+    Di HP buka  http://192.168.1.7:8001
+
+LANGKAH 5 - LINK HTTPS GRATIS (supaya bisa di-install di Android & dibuka di mana saja)
+  1. Klik dua kali 2-LINK-HTTPS-SEMENTARA.bat
+     Pertama kali dia memasang "cloudflared" lalu minta dijalankan sekali lagi.
+  2. Muncul link seperti  https://kata-kata-acak.trycloudflare.com
+  3. Buka link itu di Chrome HP -> menu titik tiga -> "Instal aplikasi" / "Tambahkan ke layar utama".
+  Catatan: link ini GANTI setiap kali file dijalankan ulang. Untuk link tetap, pakai LANGKAH 6.
+
+LANGKAH 6 - DOMAIN SENDIRI + HTTPS PERMANEN (gratis kecuali harga domain)
+  Kamu butuh domain (mis. komikku.my.id, sekitar Rp10.000-150.000/tahun di Domainesia,
+  Niagahoster, Rumahweb, atau Cloudflare Registrar). HTTPS-nya gratis dari Cloudflare.
+  1. Daftar gratis di https://dash.cloudflare.com -> "Add a domain" -> masukkan domainmu -> paket Free.
+  2. Cloudflare memberi 2 alamat "nameserver". Masuk ke tempat kamu membeli domain ->
+     ganti nameserver domain dengan 2 alamat itu. Tunggu sampai Cloudflare bilang "Active" (5 menit - 24 jam).
+  3. Di Cloudflare buka "Zero Trust" -> Networks -> Tunnels -> "Create a tunnel"
+     -> pilih "Cloudflared" -> beri nama "reiki" -> pilih Windows.
+  4. Cloudflare menampilkan perintah  cloudflared.exe service install eyJ...  -> salin.
+     Buka Start -> ketik cmd -> klik kanan "Command Prompt" -> "Run as administrator" -> tempel -> Enter.
+  5. Kembali ke Cloudflare -> tab "Public Hostname" -> Add:
+       Subdomain : baca        Domain : domainkamu
+       Type      : HTTP        URL    : localhost:8001
+     Simpan.
+  6. Selesai: https://baca.domainkamu  -> buka di Chrome HP -> "Instal aplikasi".
+     Tunnel ini menyala sendiri setiap Windows hidup, alamatnya tidak pernah berubah.
+
+LANGKAH 7 - PENERJEMAH SENDIRI (opsional, tidak bergantung Google)
+  Butuh: Python 3.11, RAM minimal 4 GB, ruang kosong sekitar 3 GB.
+  1. Klik dua kali 3-PENERJEMAH-SENDIRI.bat (pertama kali 10-20 menit). Biarkan jendelanya terbuka.
+  2. Buka file app\.env dengan Notepad, ubah:
+       LIBRETRANSLATE_URL=http://localhost:5000
+     Kalau mau penerjemah sendiri dipakai PERTAMA (bukan cadangan), ubah juga:
+       TRANSLATE_ORDER=libre,google,mymemory
+  3. Tutup jendela 1-JALANKAN-SERVER lalu jalankan lagi.
+  Catatan: hasil Google biasanya lebih luwes; penerjemah sendiri tidak pernah kena batas.
+
+SUPAYA MENYALA TERUS
+  - Tekan Windows+R -> ketik  shell:startup  -> Enter. Salin "shortcut" dari
+    1-JALANKAN-SERVER.bat (dan 3-PENERJEMAH-SENDIRI.bat kalau dipakai) ke folder itu
+    (klik kanan file .bat -> Show more options -> Create shortcut -> pindahkan shortcut-nya).
+  - Settings -> System -> Power -> Screen and sleep -> "When plugged in, put my device to sleep" = Never.
+  - Laptop: Control Panel -> Power Options -> "Choose what closing the lid does" -> Do nothing.
+
+
+==============================================================
+ CARA B - WINDOWS DENGAN DOCKER DESKTOP (paling rapi, butuh RAM 8 GB)
+==============================================================
+  1. Pasang Docker Desktop: https://www.docker.com/products/docker-desktop/ lalu restart komputer.
+  2. Buka Docker Desktop -> Settings -> General -> centang "Start Docker Desktop when you sign in".
+  3. Klik dua kali JALANKAN-DENGAN-DOCKER.bat (pertama kali 5-15 menit).
+     Ini sudah termasuk database dan penerjemah sendiri. Tidak perlu LANGKAH 2, 3 dan 7.
+  4. Buka http://localhost:8001 . Untuk https lanjutkan LANGKAH 5 atau 6 di atas.
+  Data tersimpan di Docker (volume balona-data), aman walau komputer dimatikan.
+
+
+==============================================================
+ CARA C - HP ANDROID SEBAGAI SERVER (Termux)
+==============================================================
+  Jujur: bisa, tapi kurang stabil. Android suka mematikan aplikasi latar belakang,
+  dan HP jadi lebih cepat panas & boros baterai. Pakai HP lama yang selalu di-charge.
+  1. Pasang "Termux" dari F-Droid (https://f-droid.org/packages/com.termux/).
+     Versi Play Store sudah lama, jangan dipakai.
+  2. Database gratis di internet (karena MongoDB tidak tersedia di HP):
+     daftar di https://www.mongodb.com/cloud/atlas/register -> buat cluster "M0 Free"
+     -> Database Access: buat user + password -> Network Access: "Allow access from anywhere"
+     -> Connect -> Drivers -> salin link  mongodb+srv://user:password@....mongodb.net/
+  3. Di Termux ketik (satu per satu):
+       termux-setup-storage
+       cp -r /sdcard/Download/penerjemah-reiki ~/reiki      (sesuaikan lokasi folder hasil ekstrak)
+       bash ~/reiki/android-termux/jalankan-termux.sh
+     Skrip berhenti dan minta kamu mengisi MONGO_URL:
+       nano ~/reiki/app/.env      -> ganti baris MONGO_URL dengan link Atlas -> Ctrl+X, Y, Enter
+       bash ~/reiki/android-termux/jalankan-termux.sh
+  4. Buka http://localhost:8001 di Chrome HP yang sama.
+     Untuk https: geser kiri di Termux -> "New session" -> bash ~/reiki/android-termux/link-https-termux.sh
+  5. Pengaturan Android -> Aplikasi -> Termux -> Baterai -> "Tidak dibatasi".
+  Catatan: Atlas gratis berisi 512 MB (cukup untuk sekitar 100 chapter yang sudah diterjemahkan).
+
+
+==============================================================
+ MENGUBAH KODE (opsional)
+==============================================================
+  - Program server: file .py di folder app\ (Python, FastAPI). Ubah, lalu jalankan ulang.
+  - Tampilan: folder source-frontend\ (React). Butuh Node.js 20 + Yarn:
+       cd source-frontend
+       yarn install
+       set REACT_APP_BACKEND_URL=
+       yarn build
+    Lalu hapus isi app\web dan salin isi folder build\ ke app\web.
+  - Simpan cadangan kode ke GitHub (gratis, privat): https://github.com/new -> "uploading an existing file"
+    -> seret semua isi folder ini (kecuali app\.venv dan lt-venv).
+
+
+==============================================================
+ MASALAH UMUM
+==============================================================
+  "python is not recognized"     -> Python dipasang tanpa centang "Add to PATH". Pasang ulang, centang.
+  Halaman kosong / error database -> MongoDB belum menyala: Start -> ketik "Services" -> cari MongoDB -> Start.
+  "Address already in use"       -> Penerjemah Reiki sudah jalan di jendela lain. Tutup salah satunya.
+  Terjemahan kosong              -> internet mati, atau Google sedang membatasi. Nyalakan LANGKAH 7.
+  Tidak ada tombol "Instal"      -> harus dibuka lewat link https (LANGKAH 5 atau 6), bukan http.
+  Gambar tidak muncul            -> situs komik sedang lambat/berubah. Tarik layar ke bawah untuk muat ulang.
+
+Selamat membaca!
